@@ -37,7 +37,7 @@ double consts[NUM_CONSTS];
 
 #ifndef NO_IP_DEMON
 int no_ip_demon = 0;
-void init_addr_server();
+void init_addr_server PROT((char *, int));
 #endif				/* NO_IP_DEMON */
 
 #ifdef SIGNAL_FUNC_TAKES_INT
