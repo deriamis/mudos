@@ -36,7 +36,7 @@ static char *mud_lib;
 double consts[NUM_CONSTS];
 
 #ifndef NO_IP_DEMON
-void init_addr_server();
+void init_addr_server PROT((char *, int));
 #endif				/* NO_IP_DEMON */
 
 #ifdef SIGNAL_FUNC_TAKES_INT
