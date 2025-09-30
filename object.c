@@ -235,7 +235,7 @@ restore_internal_size P3(char **, str, int, is_mapping, int, depth)
 {
     register char *cp = *str;
     int size = 0;
-    char c, delim, index = 0;
+    char c, delim, _index = 0;
 
     delim = is_mapping ? ':' : ',';
     while ((c = *cp++)) {
@@ -333,7 +333,7 @@ restore_internal_size P3(char **, str, int, is_mapping, int, depth)
 		size++;
 	    }
 	}
-	if (is_mapping) delim = (index ^= 1) ? ',' : ':';
+	if (is_mapping) delim = (_index ^= 1) ? ',' : ':';
     }
     return 0;
 }
@@ -345,7 +345,7 @@ restore_size P2(char **, str, int, is_mapping)
 {
     register char *cp = *str;
     int size = 0;
-    char c, delim, index = 0;
+    char c, delim, _index = 0;
 
     delim = is_mapping ? ':' : ',';
 
@@ -418,7 +418,7 @@ restore_size P2(char **, str, int, is_mapping)
 		size++;
 	    }
 	}
-	if (is_mapping) delim = (index ^= 1) ? ',' : ':';
+	if (is_mapping) delim = (_index ^= 1) ? ',' : ':';
     }
     return -1;
 }
