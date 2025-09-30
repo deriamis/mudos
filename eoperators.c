@@ -960,7 +960,7 @@ f_switch()
     POINTER_INT r;
     int i;
     char *l, *end_tab;
-    static unsigned short off_tab[] =
+    static unsigned int off_tab[] =
     {
 	0 * SWITCH_CASE_SIZE, 1 * SWITCH_CASE_SIZE, 3 * SWITCH_CASE_SIZE,
 	7 * SWITCH_CASE_SIZE, 15 * SWITCH_CASE_SIZE, 31 * SWITCH_CASE_SIZE,
