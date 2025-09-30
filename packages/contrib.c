@@ -237,7 +237,7 @@ static mapping_t *deep_copy_mapping P1( mapping_t *, arg ) {
     mapping_t *map;
     
     map = allocate_mapping( 0 ); /* this should be fixed.  -Beek */
-    mapTraverse( arg, (int (*)()) doCopy, map); /* Not horridly efficient either */
+    mapTraverse( arg, (int (*)(mapping_t *, mapping_node_t *, void *)) doCopy, map); /* Not horridly efficient either */
     return map;
 }
 
