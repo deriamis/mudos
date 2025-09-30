@@ -1,6 +1,7 @@
 #include "std.h"
 #include "comm.h"
 #include "backend.h"
+#include "hash.h"
 #include "add_action.h"
 
 #ifndef NO_ADD_ACTION

@@ -1,4 +1,4 @@
-#if !defined(STD_INCL_H) && !defined(_FUNC_SPEC_)
+#if !defined(STD_INCL_H)
 #define STD_INCL_H
 
 #ifdef INCL_STDLIB_H

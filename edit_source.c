@@ -1115,7 +1115,7 @@ static void handle_build_efuns() {
     make_efun_tables();
 }
 
-static handle_applies() {
+static void handle_applies() {
     FILE *f = fopen("applies", "r");
     FILE *out = fopen("applies.h", "w");
     FILE *table = fopen("applies_table.c", "w");
