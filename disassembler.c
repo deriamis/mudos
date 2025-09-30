@@ -608,9 +608,9 @@ disassemble P5(FILE *, f, char *, code, int, start, int, end, program_t *, prog)
 			COPY_SHORT(&sarg, pc + SIZEOF_PTR);
 			if (ttype == 1 || !parg) {
 			    if (sarg == 1)
-				fprintf(f, "\t%-4d\t<range start>\n", (int)parg);
+				fprintf(f, "\t%-4p\t<range start>\n", parg);
 			    else
-				fprintf(f, "\t%-4d\t%04x\n", (int)parg, addr+sarg);
+				fprintf(f, "\t%-4p\t%04x\n", parg, addr+sarg);
 			} else {
 			    fprintf(f, "\t\"%s\"\t%04x\n",
 			    disassem_string(parg), addr+sarg);
