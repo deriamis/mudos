@@ -1141,8 +1141,15 @@ int get_socket_address P3(int, fd, char *, addr, int *, port)
 	*port = 0;
 	return EEFDRANGE;
     }
-    *port = (int) ntohs(lpc_socks[fd].r_addr.sin_port);
-    sprintf(addr, "%s", inet_ntoa(lpc_socks[fd].r_addr.sin_addr));
+
+    if (local) {
+        addr_in = &lpc_socks[fd].l_addr;
+    } else {
+        addr_in = &lpc_socks[fd].r_addr;
+    }
+
+    *port = (int) ntohs(addr_in->sin_port);
+    strcpy(addr, inet_ntoa(addr_in->sin_addr));
     return EESUCCESS;
 }
 

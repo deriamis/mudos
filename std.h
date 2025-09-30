@@ -7,13 +7,20 @@
 #include "arch.h"
 
 /* all options and configuration */
-#include "options_incl.h"
 #include "configure.h"
+#include "options_incl.h"
 
-#   ifdef PEDANTIC
-#      undef INLINE
-#      define INLINE
-#   endif
+#ifdef PEDANTIC
+#    undef INLINE
+#    define INLINE
+#elif defined(EDIT_SOURCE)
+#    ifndef CONST
+#        define CONST
+#    endif
+#    ifndef INLINE
+#        define INLINE
+#    endif
+#endif
 
 #include "portability.h"
 #include "macros.h"

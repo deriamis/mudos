@@ -15,7 +15,7 @@
 #include "port.h"
 #include "crypt.h"
 
-/* get a value for CLK_TCK for use by times() */
+/* get a value for CLOCKS_PER_SEC for use by times() */
 #if (defined(TIMES) && !defined(RUSAGE))
 /* this may need #ifdef'd to handle different types of machines */
 #include <limits.h>
@@ -264,8 +264,8 @@ f_rusage PROT((void))
 
     times(&t);
     m = allocate_mapping(2);
-    add_mapping_pair(m, "utime", t.tms_utime * 1000 / CLK_TCK);
-    add_mapping_pair(m, "stime", t.tms_stime * 1000 / CLK_TCK);
+    add_mapping_pair(m, "utime", t.tms_utime * 1000 / CLOCKS_PER_SEC);
+    add_mapping_pair(m, "stime", t.tms_stime * 1000 / CLOCKS_PER_SEC);
     push_refed_mapping(m);
 }
 

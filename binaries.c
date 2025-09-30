@@ -14,6 +14,7 @@
 #include "binaries.h"
 #include "lex.h"
 #include "backend.h"
+#include "qsort.h"
 #include "swap.h"
 #include "qsort.h"
 #include "compile_file.h"

@@ -1,6 +1,7 @@
 %{
 #define EDIT_SOURCE
 #define NO_OPCODES
+#include "y.tab.h"
 #include "std.h"
 #include "make_func.h"
 #include "lex.h"

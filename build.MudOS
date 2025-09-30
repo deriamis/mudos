@@ -95,6 +95,9 @@ OPTIMIZE="-O"
 #OPTIMIZE="-O2 -Olimit 5000"
 # high optimization for cc on SGI
 #OPTIMIZE="-O2 -Olimit 2500"
+
+# Force 32-bit compilation
+OSFLAGS="-m32"
  
 # System V Release 4 (386/486 or if using Sun's cc under Solaris 2.x)
 # ARCH: need a way to detect this
@@ -133,12 +136,12 @@ echo "Trying out some stuff to see what works; ignore errors ..."
 # Figure out what make is, and how to invoke it
 # 
 if test "${MAKE-x}" = "x"; then
-    gmake nothing
+    gmake nothing >/dev/null 2>&1
     if test $? -eq 0; then
         MAKE=gmake
         MAKEFILE=GNUmakefile
     else
-        make nothing
+        make nothing >/dev/null 2>&1
         if test $? -eq 0; then
             MAKE=make
             tmp=`make which_makefile 2>/dev/null | grep -v echo`
@@ -170,29 +173,32 @@ cat >comptest.c <<END
 int main() {
 }
 END
-xlc comptest.c
+xlc comptest.c >/dev/null 2>&1
 if test $? -eq 0; then
     CC=xlc
     if test "${DEBUG-x}" = "x"; then
         OPTIMIZE=${OPTIMIZE-"-O3 -Q -qMAXMEM=16000"}
     fi
 else
-    gcc comptest.c
+    gcc comptest.c >/dev/null 2>&1
     if test $? -eq 0; then
         CC=gcc
         if test "${DEBUG-x}" = "x"; then
             OPTIMIZE=${OPTIMIZE-"-O2 -g"}
 	    GNUC=1
         fi
+	GNUC=1
+	OSFLAGS="-lm"
+	CCFLAGS="-D__USE_FIXED_PROTOTYPES__ -Wno-trigraphs"
     else
-        clcc comptest.c
+        clcc comptest.c >/dev/null 2>&1
         if test $? -eq 0; then
             CC=clcc
             if test "${DEBUG-x}" = "x"; then
                 OPTIMIZE=${OPTIMIZE-"-O"}
             fi
         else
-            cc comptest.c
+            cc comptest.c >/dev/null 2>&1
             if test $? -eq 0; then
                 CC=cc
                 if test "${DEBUG-x}" = "x"; then
@@ -202,7 +208,7 @@ else
 Oh darn it's not gcc
 #endif
 END
-		    cc comptest.c
+		    cc comptest.c >/dev/null 2>&1
 		    if test $? -eq 0; then
 			OPTIMIZE=${OPTIMIZE-"-O2 -fstrength-reduce"}
 			GNUC=1
@@ -234,15 +240,15 @@ cat >comptest.c <<END
 #define foo
 Make this fail if we actually get compiled
 END
-$CC -E comptest.c >/dev/null
+$CC -E comptest.c >/dev/null 2>&1
 if test $? -eq 0; then
     CPP="$CC -E $NEED_OLD_CPP"
 else
-    cpp comptest.c >/dev/null
+    cpp comptest.c >/dev/null 2>&1
     if test $? -eq 0; then
         CPP="cpp"
     else
-        $CC -E -traditional-cpp comptest.c >/dev/null
+        $CC -E -traditional-cpp comptest.c >/dev/null 2>&1
 	if test $? -eq 0; then
 	    CPP="$CC -E -traditional-cpp"
 	else
@@ -255,17 +261,17 @@ fi
 #
 # Figure out what to use for install
 #
-mkdir tmp
+mkdir tmp >/dev/null 2>&1
 cat >insttest <<END
 whatever
 END
-rm tmp/insttest
-install -f insttest tmp
+rm tmp/insttest >/dev/null 2>&1
+install -f insttest tmp >/dev/null 2>&1
 if test $? -eq 0 && test -f tmp/insttest; then
     INSTALL="install -f"
 else
-    rm tmp/insttest
-    install -c insttest tmp
+    rm tmp/insttest >/dev/null 2>&1
+    install -c insttest tmp >/dev/null 2>&1
     if test $? -eq 0 && test -f tmp/insttest; then
        INSTALL="install -c"
     else
@@ -276,7 +282,7 @@ fi
 cat >comptest.c <<END
 void foo() { }
 END
-$CC -c comptest.c -o comptest.o
+$CC -c comptest.c -o comptest.o >/dev/null 2>&1
 
 #
 # Check if ranlib exists/is needed.  Also check ar.
@@ -284,14 +290,14 @@ $CC -c comptest.c -o comptest.o
 cat >comptest.c <<END
 int if_you_are_reading_this_you_must_be_bored() { return 1; }
 END
-$CC -c comptest.c
+$CC -c comptest.c >/dev/null 2>&1
 
-ar rcu comptest.a comptest.o
+ar rcu comptest.a comptest.o >/dev/null 2>&1
 if test $? -ne 0; then
     echo "FATAL ERROR: Could not find ar."
     exit
 fi
-ranlib comptest.a
+ranlib comptest.a >/dev/null 2>&1
 if test $? -eq 0; then
     RANLIB=ranlib    
 else
@@ -306,15 +312,15 @@ cat >comptest.y <<END
 %%
 all: FOO
 END
-bison comptest.y
+bison comptest.y >/dev/null 2>&1
 if test $? -eq 0 && test $CC != "xlc"; then
-    YACC="bison -d -y"
+    YACC="bison -d -y -Wno-yacc"
 else
-    byacc comptest.y
+    byacc comptest.y >/dev/null 2>&1
     if test $? -eq 0; then
         YACC="byacc -d"
     else
-        yacc comptest.y
+        yacc comptest.y >/dev/null 2>&1
         if test $? -eq 0; then
             YACC="yacc -d"
         else
@@ -337,7 +343,7 @@ int main() {
     printf("%s\n", ARCH);
 }
 END
-$CC $CFLAGS comptest.c
+$CC $CFLAGS comptest.c >/dev/null 2>&1
 ARCH=`./a.out`
 
 case $ARCH in
@@ -354,30 +360,32 @@ esac
 #
 # check for some missing functions
 #
-rm a.out
+rm a.out >/dev/null 2>&1
 cat >comptest.c <<END
 int main() {
 strchr(0,0); strrchr(0,0);
 }
 END
-$CC $CFLAGS comptest.c
+$CC $CFLAGS comptest.c >/dev/null 2>&1
 if test ! -f a.out; then
     STR="-Dstrchr=index -Dstrrchr=rindex"
 fi
 
-rm a.out
+rm a.out >/dev/null 2>&1
 cat >comptest.c <<END
 int main() {
 memcpy(0,0,0);memset(0,0,0);strtol(0,0,0);strcspn(0,0);
 }
 END
-$CC $CFLAGS comptest.c
+$CC $CFLAGS comptest.c >/dev/null 2>&1
 if test ! -f a.out; then
     STRFUNCS=strfuncs.o
 fi
 
-CFLAGS="$OSFLAGS $WARN $PROFIL $DEBUG $DEBUG_MACRO $DEBUG_NON_FATAL $STR $PIPE $NEED_OLD_CPP $INCLUDE"
-mkdir $OBJDIR
+CFLAGS="$CCFLAGS $OSFLAGS $WARN $PROFIL $DEBUG $DEBUG_MACRO $DEBUG_NON_FATAL $STR $PIPE $NEED_OLD_CPP $INCLUDE $EXPORT_DYNAMIC"
+if test ! "$OBJDIR" = ""; then
+    mkdir $OBJDIR >/dev/null 2>&1
+fi
 
 echo SHELL=/bin/sh >>Makefile.tmp
 echo OBJDIR=$OBJDIR >>Makefile.tmp

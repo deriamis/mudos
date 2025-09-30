@@ -221,7 +221,7 @@ clean: neat
 	-rm -f cc.h edit_source
 	-rm -f core y.output testsuite/core testsuite/tmp/*
 	-rm -f testsuite/OPCPROF.* testsuite/opc.*
-	-rm -rf testsuite/binaries testsuite/single/swapfile.*
+	-rm -rf testsuite/binaries testsuite/single/swapfile.* tmp/
 	-rm -f testsuite/OBJ_DUMP* testsuite/test_file testsuite/testfile
 	-rm -f testsuite/tmp_eval_file.c testsuite/sf.o testsuite/ed_test
 	-rm -f testsuite/log/log testsuite/log/debug.log testsuite/log/compile
