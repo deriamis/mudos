@@ -199,7 +199,7 @@ else
         fi
 	GNUC=1
 	OSFLAGS="-lm"
-	CCFLAGS="-D__USE_FIXED_PROTOTYPES__ -Wno-trigraphs"
+	CCFLAGS="-D__USE_FIXED_PROTOTYPES__ -Wall -Wextra -Wno-trigraphs -Wno-error"
     else
         clcc comptest.c >/dev/null 2>&1
         if test $? -eq 0; then
