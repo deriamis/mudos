@@ -1,6 +1,8 @@
 GNUmakefile
 Makefile
 configuration
+configure.h
+options_incl.h
 applies.h
 applies_table.c
 efun_defs.c
