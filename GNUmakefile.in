@@ -100,7 +100,6 @@ packages/packages.a: packages/parser.c packages/contrib.c
 mudlib/mudlib.a:
 	$(MAKE) -C mudlib 'CC=$(CC)' 'CFLAGS=$(CFLAGS) $(OPTIMIZE)' 'OBJDIR=../$(OBJDIR)' 'RANLIB=$(RANLIB)' 'A=$(A)' 'O=$(O)'
 $(DRIVER_BIN): packages/packages.a mudlib/mudlib.a $(OBJ)
-	-mv -f $(DRIVER_BIN) $(DRIVER_BIN).old
 	$(PROOF) $(CC) $(CFLAGS) $(OPTIMIZE) $(OBJ) -o $(DRIVER_BIN) packages/packages.a mudlib/mudlib.a $(EXTRALIBS) `cat system_libs`
 
 addr_server: files $(OBJDIR)/addr_server.o $(OBJDIR)/socket_ctrl.o $(OBJDIR)/port.o addr_server.h
