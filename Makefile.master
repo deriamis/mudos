@@ -202,12 +202,10 @@ mudlib/mudlib.a:
 $(DRIVER_BIN): $(DRIVER_BIN).exe
 
 $(DRIVER_BIN).exe: packages/packages.lib mudlib/mudlib.lib $(OBJ)
-	-mv -f $(DRIVER_BIN).exe $(DRIVER_BIN).old
 	$(CC) $(CFLAGS) $(OPTIMIZE) $(OBJ) -Fe$(DRIVER_BIN).exe packages/packages.lib mudlib/mudlib.lib \
 	$(EXTRALIBS) @system_libs
 %else
 $(DRIVER_BIN): packages/packages.a mudlib/mudlib.a $(OBJ)
-	-mv -f $(DRIVER_BIN) $(DRIVER_BIN).old
 	$(PROOF) $(CC) $(CFLAGS) $(OPTIMIZE) $(OBJ) -o $(DRIVER_BIN) packages/packages.a mudlib/mudlib.a $(EXTRALIBS) `cat system_libs`
 %endif
 
