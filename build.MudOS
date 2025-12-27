@@ -74,8 +74,11 @@ OPTIMIZE="-O2 -fstrength-reduce"
 # high optimization for cc on SGI
 #OPTIMIZE="-O2 -Olimit 2500"
 
+# Force c99 standard
+OSFLAGS="${OSFLAGS:+${OSFLAGS} }-std=gnu99"
+
 # Force 32-bit compilation
-OSFLAGS="-m32"
+OSFLAGS="${OSFLAGS:+${OSFLAGS} }-m32"
  
 # System V Release 4 (386/486 or if using Sun's cc under Solaris 2.x)
 # ARCH: need a way to detect this
@@ -105,7 +108,6 @@ OSFLAGS="-m32"
 
 # Location of libmysql.a, if you are using PACKAGE_DB
 #EXTRALIBS=-L/usr/local/lib -lmsql
-EXTRALIBS=-lmsql
 
 ####### END OF USER CONFIGURABLE OPTIONS
 
@@ -130,7 +132,7 @@ if test $# -ne 0; then
             ;;
     esac
 else
-    WARN="${WARN:+${WARN} }-Wno-error"
+    WARN="${WARN:+${WARN} }-Wno-error=incompatible-pointer-types"
     echo "Preparing to build standard MudOS driver ..."
 fi
 
@@ -202,7 +204,6 @@ else
             OPTIMIZE=${OPTIMIZE-"-O2 -fstrength-reduce"}
         fi
 	GNUC=1
-	OSFLAGS="-lm"
 	CCFLAGS="${CFLAGS:+${CFLAGS} }-D__USE_FIXED_PROTOTYPES__ -Wall -Wextra -Wno-trigraphs -Wno-error"
     else
         clcc comptest.c >/dev/null 2>&1
