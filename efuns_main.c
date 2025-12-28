@@ -3357,6 +3357,14 @@ f_time PROT((void))
 }
 #endif
 
+#ifdef F_REAL_TIME
+void
+f_real_time PROT((void))
+{
+   push_number (get_current_time ());
+}
+#endif
+
 #ifdef F__TO_FLOAT
 void
 f__to_float PROT((void))
