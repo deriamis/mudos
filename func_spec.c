@@ -394,6 +394,7 @@ void message(mixed, mixed, string | string * | object | object *,
 #ifdef DEBUG
     void swap(object);		/* Only used for debugging */
 #endif
+    int real_time();
     int resolve(string, string|function);
 
 /* shutdown is at the end because it is only called once per boot cycle :) */
