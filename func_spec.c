@@ -376,7 +376,7 @@ void message(mixed, mixed, string | string * | object | object *,
 #ifdef DEBUG
     void swap(object);		/* Only used for debugging */
 #endif
-    int resolve(string, string);
+    int resolve(string, string|function);
 
     int real_time();
 
