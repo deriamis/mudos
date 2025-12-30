@@ -200,10 +200,10 @@ static char *pushes[] = { "string", "number", "global", "local" };
 static void
 disassemble P5(FILE *, f, char *, code, int, start, int, end, program_t *, prog)
 {
-    int i, j, instr, iarg, is_efun;
+    int i, j, instr = 0, iarg;
     unsigned short sarg;
     unsigned short offset;
-    char *pc, buff[256];
+    char *pc = 0, buff[256];
     int next_func;
 
     short *offsets;
@@ -242,8 +242,6 @@ disassemble P5(FILE *, f, char *, code, int, start, int, end, program_t *, prog)
 	}
 
 	fprintf(f, "%04x: ", (unsigned) (pc - code));
-
-	is_efun = (instr = EXTRACT_UCHAR(pc)) >= BASE;
 
 	pc++;
 	buff[0] = 0;
