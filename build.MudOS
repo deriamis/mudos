@@ -109,6 +109,9 @@ OSFLAGS="${OSFLAGS:+${OSFLAGS} }-m32"
 # used by ioctl on some systems.
 #NEED_OLD_CPP=-traditional-cpp
 
+# Libraries needed to build on the current system
+LIBS="-lresolv -lcrypt -ldl -lm"
+
 # Location of libmysql.a, if you are using PACKAGE_DB
 #EXTRALIBS=-L/usr/local/lib -lmsql
 
@@ -196,7 +199,7 @@ else
             OPTIMIZE=${OPTIMIZE-"-O2 -fstrength-reduce"}
         fi
 	GNUC=1
-	CCFLAGS="${CFLAGS:+${CFLAGS} }-D__USE_FIXED_PROTOTYPES__ -Wall -Wextra -Wno-trigraphs -Wno-error"
+	CCFLAGS="${CFLAGS:+${CFLAGS} }-D__USE_FIXED_PROTOTYPES__ -Wall -Wextra -Wno-trigraphs -Wno-unused-parameter -Wno-sequence-point -Wno-array-bounds -Wno-switch -Wno-error"
     else
         clcc comptest.c >/dev/null 2>&1
         if test $? -eq 0; then
@@ -423,6 +426,8 @@ echo "Otherwise, type '$MAKE' to build MudOS, then '$MAKE install'."
 
 cat Makefile.tmp ${MAKEFILE}.in >$MAKEFILE
 rm Makefile.tmp
+
+echo "${LIBS}" > system_libs
 
 if test $MAKEFILE = Makefile; then
 cat >GNUmakefile <<END

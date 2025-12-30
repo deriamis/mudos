@@ -231,10 +231,13 @@ f_ge()
 	    case T_NUMBER:
 	    case T_REAL:
 		bad_argument(sp, T_NUMBER | T_REAL, 2, F_GE);
+        break;
 	    case T_STRING:
 		bad_argument(sp, T_STRING, 2, F_GE);
+        break;
 	    default:
 		bad_argument(sp - 1, T_NUMBER | T_STRING | T_REAL, 1, F_GE);
+        break;
 	    }
 	}
     }
@@ -272,10 +275,13 @@ f_gt() {
 	    case T_NUMBER:
 	    case T_REAL:
 		bad_argument(sp, T_NUMBER | T_REAL, 2, F_GT);
+        break;
 	    case T_STRING:
 		bad_argument(sp, T_STRING, 2, F_GT);
+        break;
 	    default:
 		bad_argument(sp-1, T_NUMBER | T_REAL | T_STRING, 1, F_GT);
+        break;
 	    }
 	}
     }
@@ -316,12 +322,15 @@ f_le()
 	    case T_NUMBER:
 	    case T_REAL:
 		bad_argument(sp, T_NUMBER | T_REAL, 2, F_LE);
+        break;
 		
 	    case T_STRING:
 		bad_argument(sp, T_STRING, 2, F_LE);
+        break;
 		
 	    default:
 		bad_argument(sp - 1, T_NUMBER | T_STRING | T_REAL, 1, F_LE);
+        break;
 	    }
 	}
     }
@@ -357,10 +366,13 @@ f_lt() {
 	case T_NUMBER:
 	case T_REAL:
 	    bad_argument(sp, T_NUMBER | T_REAL, 2, F_LT);
+        break;
 	case T_STRING:
 	    bad_argument(sp, T_STRING, 2, F_LT);
+        break;
 	default:
 	    bad_argument(sp-1, T_NUMBER | T_STRING | T_REAL, 1, F_LT);
+        break;
 	}
     }
     sp->subtype = 0;
@@ -955,8 +967,8 @@ f_switch()
 {
     unsigned short offset, end_off;
     int d;
-    POINTER_INT s;
-    POINTER_INT r;
+    POINTER_INT s = 0;
+    POINTER_INT r = 0;
     int i;
     char *l, *end_tab;
     static unsigned int off_tab[] =
@@ -1017,7 +1029,7 @@ f_switch()
 	    COPY_INT(&d, zz);
 	    /* d is minimum value - see if in range or not */
 	    s -= d;
-	    if (s >= 0 && s < (zz-l)/sizeof(short)) {
+	    if (s >= 0 && (size_t)s < (zz-l)/sizeof(short)) {
 		COPY_SHORT(&offset, l + s * sizeof(short));
 		if (offset) {
 		    pc = current_prog->program + offset;
@@ -1193,7 +1205,7 @@ f_xor_eq()
 INLINE void
 f_function_constructor()
 {
-    funptr_t *fp;
+    funptr_t *fp = 0;
     int kind;
     unsigned short index;
 

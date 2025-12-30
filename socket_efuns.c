@@ -295,7 +295,7 @@ int socket_create P3(enum socket_mode, mode, svalue_t *, read_callback, svalue_t
  */
 int socket_bind P2(int, fd, int, port)
 {
-    int len;
+    size_t len;
     struct sockaddr_in sin;
 
     if (fd < 0 || fd >= max_lpc_socks)
@@ -377,9 +377,9 @@ int socket_listen P2(int, fd, svalue_t *, callback)
  */
 int socket_accept P3(int, fd, svalue_t *, read_callback, svalue_t *, write_callback)
 {
-    int len, accept_fd, i;
+    size_t len = 0;
+    int accept_fd = 0, i = 0;
     struct sockaddr_in sin;
-    struct hostent *hp;
 
     if (fd < 0 || fd >= max_lpc_socks)
 	return EEFDRANGE;
@@ -396,7 +396,7 @@ int socket_accept P3(int, fd, svalue_t *, read_callback, svalue_t *, write_callb
     lpc_socks[fd].flags &= ~S_WACCEPT;
 
     len = sizeof(sin);
-    accept_fd = accept(lpc_socks[fd].fd, (struct sockaddr *) & sin, (int *) &len);
+    accept_fd = accept(lpc_socks[fd].fd, (struct sockaddr *) & sin, &len);
     if (accept_fd == -1) {
 	switch (socket_errno) {
 #ifdef EWOULDBLOCK
@@ -426,8 +426,6 @@ int socket_accept P3(int, fd, svalue_t *, read_callback, svalue_t *, write_callb
     i = find_new_socket();
     if (i >= 0) {
 	fd_set wmask;
-	struct timeval t;
-	int nb;
 
 	lpc_socks[i].fd = accept_fd;
 	lpc_socks[i].flags = S_HEADER |
@@ -435,13 +433,6 @@ int socket_accept P3(int, fd, svalue_t *, read_callback, svalue_t *, write_callb
 
 	FD_ZERO(&wmask);
 	FD_SET(accept_fd, &wmask);
-	t.tv_sec = 0;
-	t.tv_usec = 0;
-#ifndef hpux
-	nb = select(FD_SETSIZE, (fd_set *) 0, &wmask, (fd_set *) 0, &t);
-#else
-	nb = select(FD_SETSIZE, (int *) 0, (int *) &wmask, (int *) 0, &t);
-#endif
 	if (!(FD_ISSET(accept_fd, &wmask)))
 	    lpc_socks[i].flags |= S_BLOCKED;
 
@@ -751,7 +742,8 @@ static void call_callback P3(int, fd, int, what, int, num_arg)
  */
 void socket_read_select_handler P1(int, fd)
 {
-    int cc = 0, addrlen;
+    int cc = 0;
+    size_t addrlen = 0;
     char buf[BUF_SIZE], addr[ADDR_BUF_SIZE];
     svalue_t value;
     struct sockaddr_in sin;

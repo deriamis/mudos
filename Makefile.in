@@ -246,9 +246,9 @@ clean: neat
 	-rm -f testsuite/OBJ_DUMP* testsuite/test_file testsuite/testfile
 	-rm -f testsuite/tmp_eval_file.c testsuite/sf.o testsuite/ed_test
 	-rm -f testsuite/log/log testsuite/log/debug.log testsuite/log/compile
-	-find . -name "*~" -print | xargs rm
-	-find . -name "*.orig" -print | xargs rm
-	-find . -name "*.rej" -print | xargs rm
+	-find . -name "*~" -print -delete
+	-find . -name "*.orig" -print -delete
+	-find . -name "*.rej" -print -delete
 	-rm -f *.ln tags TAGS
 	-rm -f $(DRIVER_BIN) $(DRIVER_BIN).old addr_server portbind
 # DO NOT DELETE THIS LINE -- make depend depends on it.

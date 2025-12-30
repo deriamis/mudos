@@ -708,7 +708,7 @@
  *   (in interpret.c).  Somewhere between six (6) and ten (10) is probably
  *   sufficient for small muds.
  */
-#define APPLY_CACHE_BITS 11
+#define APPLY_CACHE_BITS 12
 
 /* CACHE_STATS: define this if you want call_other (apply_low) cache 
  * statistics.  Causes HAS_CACHE_STATS to be defined in all LPC objects.

@@ -5,7 +5,7 @@
 #include "comm.h"
 
 /* used temporarily by SVALUE_STRLEN() */
-int svalue_strlen_size;
+size_t svalue_strlen_size;
 
 #ifdef NOISY_DEBUG
 void bp PROT((void)) {

@@ -132,7 +132,7 @@ int add_string_status PROT((outbuffer_t *, int));
 
 char *extend_string PROT((char *, int));
 
-extern int svalue_strlen_size;
+extern size_t svalue_strlen_size;
 
 #ifdef STRING_STATS
 extern int num_distinct_strings;
