@@ -125,7 +125,7 @@ if test $# -ne 0; then
             CPPFLAGS="-DPEDANTIC"
             OPTIMIZE="-Og"
             DEBUG="-g -DDEBUG -DDEBUG_MACRO"
-            WARN="-Wall -Wextra -Wmissing-declarations"
+            WARN="-Wall -Wextra -Wmissing-declarations -Wno-error=incompatible-pointer-types"
             ;;
         debug)
             echo "Preparing to build debugging version of MudOS driver ..."
