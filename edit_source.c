@@ -1438,7 +1438,7 @@ static void handle_configure() {
     if (!check_prog("INLINE inline", "inline void foo() { }", "foo();", 0)) {
 	printf(" __inline ...");
 	if (!check_prog("INLINE __inline", "__inline void foo() {}", "foo();", 0)) {
-	    fprintf(yyout, "#define INLINE\n");
+	    fprintf(yyout, "#define INLINE inline\n");
 	}
     }
     printf(" const ...\n");
