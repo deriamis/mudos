@@ -1296,8 +1296,7 @@ INLINE void push_shared_string P1(char *, p) {
 /*
  * Push a string on the stack that is already constant.
  */
-INLINE
-void push_constant_string P1(char *, p)
+INLINE void push_constant_string P1(char *, p)
 {
     STACK_INC;
     sp->type = T_STRING;

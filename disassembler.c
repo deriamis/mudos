@@ -527,6 +527,8 @@ disassemble P5(FILE *, f, char *, code, int, start, int, end, program_t *, prog)
 	    {
 		unsigned char ttype;
 		unsigned short stable, etable, def;
+        unsigned int addr;
+        char *aptr;
 		char *parg;
 		
 		ttype = EXTRACT_UCHAR(pc);
@@ -536,12 +538,15 @@ disassemble P5(FILE *, f, char *, code, int, start, int, end, program_t *, prog)
 		((char *) &etable)[1] = pc[4];
 		((char *) &def)[0] = pc[5];
 		((char *) &def)[1] = pc[6];
+        addr = pc - code;
+        aptr = pc;
+
 		fprintf(f, "switch\n");
 		fprintf(f, "      type: %02x table: %04x-%04x deflt: %04x\n",
-			(unsigned) ttype, (unsigned) stable,
-			(unsigned) etable, (unsigned) def);
+			(unsigned) ttype, addr + stable,
+			addr + etable, addr + addr + def);
 		/* recursively disassemble stuff in switch */
-		disassemble(f, code, pc - code + 7, stable, prog);
+		disassemble(f, code, pc - code + 7, addr + stable, prog);
 
 		/* now print out table - ugly... */
 		fprintf(f, "      switch table (for %04x)\n",
@@ -556,16 +561,16 @@ disassemble P5(FILE *, f, char *, code, int, start, int, end, program_t *, prog)
 		pc = code + stable;
 		if (ttype == 0) {
 		    i = 0;
-		    while (pc < code + etable - 4) {
+		    while (pc < aptr + etable - 4) {
 			COPY_SHORT(&sarg, pc);
-			fprintf(f, "\t%2d: %04x\n", i++, (unsigned) sarg);
+			fprintf(f, "\t%2d: %04x\n", i++, addr + sarg);
 			pc += 2;
 		    }
 		    COPY_INT(&iarg, pc);
 		    fprintf(f, "\tminval = %d\n", iarg);
 		    pc += 4;
 		} else {
-		    while (pc < code + etable) {
+		    while (pc < aptr + etable) {
 			COPY_PTR(&parg, pc);
 			COPY_SHORT(&sarg, pc + SIZEOF_PTR);
 			if (ttype == 1 || !parg) {
@@ -575,7 +580,7 @@ disassemble P5(FILE *, f, char *, code, int, start, int, end, program_t *, prog)
 				fprintf(f, "\t%-4p\t%04x\n", parg, addr+sarg);
 			} else {
 			    fprintf(f, "\t\"%s\"\t%04x\n",
-			    disassem_string(parg), (unsigned) sarg);
+			    disassem_string(parg), addr + sarg);
 			}
 			pc += 2 + SIZEOF_PTR;
 		    }

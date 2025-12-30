@@ -61,9 +61,9 @@ BSC32_FLAGS=/nologo /o$(OUTDIR)/"MudOS.bsc"
 BSC32_SBRS= \
 	$(INTDIR)/grammar_tab.sbr \
 	$(INTDIR)/lex.sbr \
-	$(INTDIR)/main.sbr \
 	$(INTDIR)/rc.sbr \
 	$(INTDIR)/interpret.sbr \
+	$(INTDIR)/main.sbr \
 	$(INTDIR)/simulate.sbr \
 	$(INTDIR)/file.sbr \
 	$(INTDIR)/object.sbr \
@@ -136,9 +136,9 @@ DEF_FILE=
 LINK32_OBJS= \
 	$(INTDIR)/grammar_tab.obj \
 	$(INTDIR)/lex.obj \
-	$(INTDIR)/main.obj \
 	$(INTDIR)/rc.obj \
 	$(INTDIR)/interpret.obj \
+	$(INTDIR)/main.obj \
 	$(INTDIR)/simulate.obj \
 	$(INTDIR)/file.obj \
 	$(INTDIR)/object.obj \
@@ -233,9 +233,9 @@ BSC32_FLAGS=/nologo /o$(OUTDIR)/"MudOS.bsc"
 BSC32_SBRS= \
 	$(INTDIR)/grammar_tab.sbr \
 	$(INTDIR)/lex.sbr \
-	$(INTDIR)/main.sbr \
 	$(INTDIR)/rc.sbr \
 	$(INTDIR)/interpret.sbr \
+	$(INTDIR)/main.sbr \
 	$(INTDIR)/simulate.sbr \
 	$(INTDIR)/file.sbr \
 	$(INTDIR)/object.sbr \
@@ -308,9 +308,9 @@ DEF_FILE=
 LINK32_OBJS= \
 	$(INTDIR)/grammar_tab.obj \
 	$(INTDIR)/lex.obj \
-	$(INTDIR)/main.obj \
 	$(INTDIR)/rc.obj \
 	$(INTDIR)/interpret.obj \
+	$(INTDIR)/main.obj \
 	$(INTDIR)/simulate.obj \
 	$(INTDIR)/file.obj \
 	$(INTDIR)/object.obj \

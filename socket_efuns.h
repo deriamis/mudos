@@ -62,7 +62,7 @@ void assign_socket_owner PROT((svalue_t *, object_t *));
 object_t *get_socket_owner PROT((int));
 void dump_socket_status PROT((outbuffer_t *));
 void close_referencing_sockets PROT((object_t *));
-int get_socket_address PROT((int, char *, int *));
+int get_socket_address PROT((int, char *, int *, int));
 int socket_bind PROT((int, int));
 int socket_create PROT((enum socket_mode, svalue_t *, svalue_t *));
 int socket_listen PROT((int, svalue_t *));

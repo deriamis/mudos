@@ -1134,8 +1134,10 @@ char *socket_error P1(int, error) {
 /*
  * Return the remote address for an LPC efun socket
  */
-int get_socket_address P3(int, fd, char *, addr, int *, port)
+int get_socket_address P4(int, fd, char *, addr, int *, port, int, local)
 {
+    struct sockaddr_in *addr_in;
+
     if (fd < 0 || fd >= max_lpc_socks) {
 	addr[0] = '\0';
 	*port = 0;

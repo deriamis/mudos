@@ -1,2 +1,0 @@
-SRC=uids.c external.c contrib.c sockets.c develop.c math.c 
-OBJ=uids.$(O) external.$(O) contrib.$(O) sockets.$(O) develop.$(O) math.$(O) 
