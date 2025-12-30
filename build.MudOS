@@ -42,7 +42,7 @@ DEBUG="-g"
 # For DEC Alpha: to have optimization and debugging
 #DEBUG="-g3 -DDEBUG"
 # Prevent -DDEBUG from aborting the driver (when in -DDEBUG mode)
-#DEBUG_NON_FATAL="-DDEBUG_NON_FATAL"
+DEBUG_NON_FATAL="-DDEBUG_NON_FATAL"
 # Compile in debug() macro code
 #DEBUG_MACRO="-DDEBUG_MACRO"
  
