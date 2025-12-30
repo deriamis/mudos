@@ -109,14 +109,24 @@ packages/packages.a: packages/parser.c packages/contrib.c
 mudlib/mudlib.a:
 	(cd mudlib; $(MAKE) 'CC=$(CC)' 'CFLAGS=$(CFLAGS) $(OPTIMIZE)' 'RANLIB=$(RANLIB)' 'A=$(A)' 'O=$(O)')
 $(DRIVER_BIN): packages/packages.a mudlib/mudlib.a $(OBJ)
-	$(PROOF) $(CC) $(CFLAGS) $(OPTIMIZE) $(OBJ) -o $(DRIVER_BIN) packages/packages.a mudlib/mudlib.a $(EXTRALIBS) `cat system_libs`
+	$(PROOF) $(CC) $(CFLAGS) $(OPTIMIZE) $(OBJ) \
+		-Wl,-z,relro -Wl,-z,now \
+		-o $(DRIVER_BIN) \
+		packages/packages.a mudlib/mudlib.a \
+		$(EXTRALIBS) \
+		$(shell cat system_libs)
 
 addr_server: files addr_server.o socket_ctrl.o port.o addr_server.h
 	$(CC) $(CFLAGS) $(OPTIMIZE) socket_ctrl.o addr_server.o port.o \
-	-o addr_server `cat system_libs`
+		-Wl,-z,relro -Wl,-z,now \
+		-o addr_server \
+		$(shell cat system_libs)
 
 portbind: portbind.o
-	$(CC) $(CFLAGS) $(OPTIMIZE) portbind.o -o portbind `cat system_libs`
+	$(CC) $(CFLAGS) $(OPTIMIZE) portbind.o \
+		-Wl,-z,relro -Wl,-z,now \
+		-o portbind \
+		$(shell cat system_libs)
 
 remake: neat all
 
