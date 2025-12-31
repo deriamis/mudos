@@ -109,6 +109,9 @@ OSFLAGS="${OSFLAGS:+${OSFLAGS} }-m32"
 # Location of libmysql.a, if you are using PACKAGE_DB
 #EXTRALIBS=-L/usr/local/lib -lmsql
 
+# Default warning flags
+WARN="-Wall -Wextra -Wmissing-declarations -Wno-trigraphs -Wno-unused-parameter -Wno-unused-but-set-variable -Wno-unused-function -Wno-clobbered"
+
 ####### END OF USER CONFIGURABLE OPTIONS
 
 if test $# -ne 0; then
@@ -119,7 +122,6 @@ if test $# -ne 0; then
             CPPFLAGS="-DPEDANTIC"
             OPTIMIZE="-Og"
             DEBUG="-g -DDEBUG -DDEBUG_MACRO"
-            WARN="-Wall -Wextra -Wmissing-declarations"
             ;;
         debug)
             echo "Preparing to build debugging version of MudOS driver ..."
@@ -132,7 +134,7 @@ if test $# -ne 0; then
             ;;
     esac
 else
-    WARN="${WARN:+${WARN} }-Wno-error=incompatible-pointer-types"
+    WARN="${WARN:+${WARN} }-Werror"
     echo "Preparing to build standard MudOS driver ..."
 fi
 
@@ -204,7 +206,7 @@ else
             OPTIMIZE=${OPTIMIZE-"-O2 -fstrength-reduce"}
         fi
 	GNUC=1
-	CCFLAGS="${CFLAGS:+${CFLAGS} }-D__USE_FIXED_PROTOTYPES__ -Wall -Wextra -Wno-trigraphs -Wno-error"
+	CPPFLAGS="${CPPFLAGS:+${CPPFLAGS} }-D__USE_FIXED_PROTOTYPES__"
     else
         clcc comptest.c >/dev/null 2>&1
         if test $? -eq 0; then

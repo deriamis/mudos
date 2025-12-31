@@ -23,12 +23,6 @@
 #endif
 
 /* Using an include file at this point would be bad */
-#ifdef PEDANTIC
-char *malloc(int);
-char *realloc(char *, int);
-void free(char *);
-#endif
-
 char *outp;
 static int buffered = 0;
 static int nexpands = 0;
@@ -1169,11 +1163,6 @@ static void handle_applies() {
 }
 
 static void handle_malloc() {
-#ifdef PEDANTIC
-    int unlink(char *);
-    int link(char *, char *);
-#endif
-    
     char *the_malloc = 0, *the_wrapper = 0;
 
     if (lookup_define("SYSMALLOC"))
