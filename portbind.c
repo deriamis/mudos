@@ -83,7 +83,7 @@ int main(int argc, char **argv) {
     HANDLE_ERROR(close, close(fd));
     
     /* set local address reuse */
-    HANDLE_ERROR(setsockopt, setsockopt(6, SOL_SOCKET, SO_REUSEADDR, (char *)&optval, sizeof(optval)) == -1);
+    HANDLE_ERROR(setsockopt, setsockopt(6, SOL_SOCKET, SO_REUSEADDR, (char *)&optval, sizeof(optval)));
 
     /* setup our address */
     sin.sin_family = AF_INET;

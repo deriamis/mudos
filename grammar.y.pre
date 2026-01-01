@@ -870,7 +870,7 @@ new_name:
     |   optional_star identifier L_ASSIGN expr0
 	    {
 		parse_node_t *expr, *newnode;
-		int type;
+		int type = 0;
 
 		if (current_type & (FUNC_VARARGS << 16)){
 		    yyerror("Illegal to declare varargs variable.");
@@ -1515,7 +1515,7 @@ expr0:
 %ifdef REF_RESERVED_WORD
         ref lvalue
             {
-		int op;
+		int op = 0;
 
 		if (!(context & ARG_LIST))
 		    yyerror("ref illegal outside function argument list");
@@ -2518,6 +2518,7 @@ lvalue:
 		    break;
 		case NODE_TERNARY_OP:
 		    $$->v.number = $$->r.expr->v.number;
+            break;
 		case NODE_OPCODE_1:
 		case NODE_UNARY_OP_1:
 		case NODE_BINARY_OP:
@@ -2535,6 +2536,7 @@ lvalue:
 				break;
 			    case NODE_TERNARY_OP:
 				node->v.number = node->r.expr->v.number;
+                break;
 			    case NODE_OPCODE_1:
 			    case NODE_UNARY_OP_1:
 			    case NODE_BINARY_OP:
@@ -2594,6 +2596,7 @@ lvalue:
 				    node = node->r.expr->r.expr;
 				    continue;
 				}
+                break;
 			    default:
 				yyerror("Illegal lvalue");
 				flag = LV_ILLEGAL;
@@ -2814,6 +2817,7 @@ expr4:
 		    switch($1->type) {
 		    case TYPE_MAPPING:
 			yyerror("Illegal index for mapping.");
+            break;
 		    case TYPE_ANY:
 			$$->type = TYPE_ANY;
 			break;
@@ -3415,15 +3419,16 @@ function_call:
 		  current_function_context->bindable = FP_NOT_BINDABLE;
 
 	      if (*name == ':') {
-		  int f;
+    		  int f;
 		  
-		  if ((f = arrange_call_inherited(name + 1, $$)) != -1)
-		      /* Can't do this; f may not be the correct function
-			 entry.  It might be overloaded.
+	    	  if ((f = arrange_call_inherited(name + 1, $$)) != -1) {
+		          /* Can't do this; f may not be the correct function
+			     entry.  It might be overloaded.
 			 
-		      validate_function_call(f, $$->r.expr)
-		      */
-		      ;
+    		      validate_function_call(f, $$->r.expr)
+	    	      */
+		          ;
+              }
 	      } else {
 		  int f;
 		  ident_hash_elem_t *ihe;
@@ -3603,7 +3608,7 @@ function_name:
 		p = $$ + l;
 		while (p--,l--)
 		    *(p+3) = *p;
-		strncpy($$, ":::", 3);
+		strncpy($$, ":::", 4);
 	    }
     |   L_BASIC_TYPE L_COLON_COLON identifier
 	    {

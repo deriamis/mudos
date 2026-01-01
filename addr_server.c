@@ -82,7 +82,7 @@ void init_conns()
 void init_conn_sock P2(int, port_num, char *, ipaddress)
 {
     struct sockaddr_in sin;
-    int sin_len;
+    size_t sin_len;
     int optval;
 #ifdef WINSOCK
     WSADATA WSAData;
@@ -283,13 +283,13 @@ void handle_top_event()
 void new_conn_handler()
 {
     struct sockaddr_in client;
-    int client_len;
+    size_t client_len;
     struct hostent *c_hostent;
     int new_fd;
     int conn_index;
 
     client_len = sizeof(client);
-    new_fd = accept(conn_fd, (struct sockaddr *) & client, (int *) &client_len);
+    new_fd = accept(conn_fd, (struct sockaddr *) & client, &client_len);
     if (new_fd == -1) {
 	socket_perror("new_conn_handler: accept", 0);
 	return;
@@ -333,11 +333,12 @@ void conn_data_handler P1(int, fd)
 {
     int conn_index;
     int buf_index;
-    int num_bytes;
+    size_t num_bytes;
     int msgtype;
     int leftover;
     char *buf;
-    int res, msglen, expecting;
+    int res;
+    size_t msglen, expecting;
     long unread_bytes;
 
     if ((conn_index = index_by_fd(fd)) == -1) {

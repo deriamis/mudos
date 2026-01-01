@@ -244,7 +244,7 @@ int main P2(int, argc, char **, argv)
     set_inc_list(INCLUDE_DIRS);
     if (reserved_size > 0)
 	reserved_area = (char *) DMALLOC(reserved_size, TAG_RESERVED, "main.c: reserved_area");
-    for (i = 0; i < sizeof consts / sizeof consts[0]; i++)
+    for (i = 0; i < (int)(sizeof(consts) / sizeof(consts[0])); i++)
 	consts[i] = exp(-i / 900.0);
     reset_machine(1);
     /*

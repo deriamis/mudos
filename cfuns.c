@@ -475,7 +475,7 @@ void c_index() {
 		error("Indexing a buffer with an illegal type.\n");
 	    
 	    i = (sp - 1)->u.number;
-	    if ((i > sp->u.buf->size) || (i < 0))
+	    if (((size_t)i > sp->u.buf->size) || (i < 0))
 		error("Buffer index out of bounds.\n");
 	    i = sp->u.buf->item[i];
 	    free_buffer(sp->u.buf);
@@ -489,7 +489,7 @@ void c_index() {
 		error("Indexing a string with an illegal type.\n");
 	    }
 	    i = (sp - 1)->u.number;
-	    if ((i > SVALUE_STRLEN(sp)) || (i < 0))
+	    if (((size_t)i > SVALUE_STRLEN(sp)) || (i < 0))
 		error("String index out of bounds.\n");
 	    i = (unsigned char) sp->u.string[i];
 	    free_string_svalue(sp);
@@ -536,7 +536,7 @@ void c_rindex() {
 		error("Indexing a buffer with an illegal type.\n");
 	    
 	    i = sp->u.buf->size - (sp - 1)->u.number;
-	    if ((i > sp->u.buf->size) || (i < 0))
+	    if (((size_t)i > sp->u.buf->size) || (i < 0))
 		error("Buffer index out of bounds.\n");
 
 	    i = sp->u.buf->item[i];
@@ -651,7 +651,7 @@ c_anonymous P3(int, num_arg, int, num_local, POINTER_INT, func) {
 void
 c_function_constructor P2(int, kind, int, arg)
 {
-    funptr_t *fp;
+    funptr_t *fp = 0;
 
     switch (kind) {
     case FP_EFUN:
@@ -671,8 +671,10 @@ c_function_constructor P2(int, kind, int, arg)
     case FP_ANONYMOUS:
     case FP_ANONYMOUS | FP_NOT_BINDABLE:
 	fatal("Wrong constructor called for LPC->C functional.\n");
+    break;
     default:
 	fatal("Tried to make unknown type of function pointer.\n");
+    break;
     }
     push_refed_funp(fp);
 }
@@ -953,10 +955,10 @@ void c_le() {
 	    case T_NUMBER:
 	    case T_REAL:
 		bad_argument(sp, T_NUMBER | T_REAL, 2, F_LE);
-		
+        break;
 	    case T_STRING:
 		bad_argument(sp, T_STRING, 2, F_LE);
-		
+        break;
 	    default:
 		bad_argument(sp - 1, T_NUMBER | T_STRING | T_REAL, 1, F_LE);
 	    }
@@ -992,8 +994,10 @@ void c_lt() {
 	case T_NUMBER:
 	case T_REAL:
 	    bad_argument(sp, T_NUMBER | T_REAL, 2, F_LT);
+        break;
 	case T_STRING:
 	    bad_argument(sp, T_STRING, 2, F_LT);
+        break;
 	default:
 	    bad_argument(sp-1, T_NUMBER | T_STRING | T_REAL, 1, F_LT);
 	}
@@ -1029,8 +1033,10 @@ void c_gt() {
 	    case T_NUMBER:
 	    case T_REAL:
 		bad_argument(sp, T_NUMBER | T_REAL, 2, F_GT);
+        break;
 	    case T_STRING:
 		bad_argument(sp, T_STRING, 2, F_GT);
+        break;
 	    default:
 		bad_argument(sp-1, T_NUMBER | T_REAL | T_STRING, 1, F_GT);
 	    }
@@ -1067,10 +1073,13 @@ void c_ge() {
 	    case T_NUMBER:
 	    case T_REAL:
 		bad_argument(sp, T_NUMBER | T_REAL, 2, F_GE);
+        break;
 	    case T_STRING:
 		bad_argument(sp, T_STRING, 2, F_GE);
+        break;
 	    default:
 		bad_argument(sp - 1, T_NUMBER | T_STRING | T_REAL, 1, F_GE);
+        break;
 	    }
 	}
     }
@@ -1207,22 +1216,23 @@ void c_add() {
 		/* add_array now free's the arrays */
 		(sp-1)->u.arr = add_array((sp - 1)->u.arr, sp->u.arr);
 		sp--;
-		break;
 	    }
+		break;
 	} /* end of x + T_ARRAY */
     case T_MAPPING:
 	{
 	    if ((sp-1)->type == T_MAPPING) {
-		mapping_t *map;
+    		mapping_t *map;
 		
-		map = add_mapping((sp - 1)->u.map, sp->u.map);
-		free_mapping((sp--)->u.map);
-		free_mapping(sp->u.map);
-		sp->u.map = map;
+    		map = add_mapping((sp - 1)->u.map, sp->u.map);
+	    	free_mapping((sp--)->u.map);
+		    free_mapping(sp->u.map);
+    		sp->u.map = map;
+	    } else {
+	    	error("Bad type argument to +. Had %s and %s\n",
+		          type_name((sp - 1)->type), type_name(sp->type));
+        }
 		break;
-	    } else
-		error("Bad type argument to +. Had %s and %s\n",
-		      type_name((sp - 1)->type), type_name(sp->type));
 	} /* end of x + T_MAPPING */
     case T_STRING:
 	{
@@ -1289,10 +1299,13 @@ int c_loop_cond_compare P2(svalue_t *, s1, svalue_t *, s2) {
 	case T_NUMBER:
 	case T_REAL:
 	    error("2nd argument to < is not numeric when the 1st is.\n");
+        break;
 	case T_STRING:
 	    error("2nd argument to < is not string when the 1st is.\n");
+        break;
 	default:
 	    error("Bad 1st argument to <.\n");
+        break;
 	}
     }
     return 0;
@@ -1533,7 +1546,7 @@ int c_range_switch_lookup P3(int, num, range_switch_entry_t *, table,
 }
 
 void c_make_ref P1(int, op) {
-    ref_t *ref;
+    ref_t *ref = make_ref();
 
     /* global and local refs need no protection since they are
      * guaranteed to outlive the current scope.  Lvalues inside

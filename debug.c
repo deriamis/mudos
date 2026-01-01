@@ -28,7 +28,7 @@ debug_t levels[] = {
 mapping_t *debug_levels() {
     int dl = debug_level;
     mapping_t *ret = allocate_mapping(10);
-    int i;
+    size_t i;
     
     for (i = 0; i < NELEM(levels); i++) {
 	add_mapping_pair(ret, levels[i].name, dl & levels[i].bit);
@@ -42,7 +42,7 @@ mapping_t *debug_levels() {
 }
 
 void debug_level_set P1(char *, level) {
-    int i;
+    size_t i;
     
     for (i = 0; i < NELEM(levels); i++) {
 	if (strcmp(level, levels[i].name) == 0) {
@@ -53,7 +53,7 @@ void debug_level_set P1(char *, level) {
 }
 
 void debug_level_clear P1(char *, level) {
-    int i;
+    size_t i;
     
     for (i = 0; i < NELEM(levels); i++) {
 	if (strcmp(level, levels[i].name) == 0) {

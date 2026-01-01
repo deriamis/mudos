@@ -10,6 +10,7 @@
 #include "make_func.h"
 #include "cc.h"
 #include "hash.h"
+#include "edit_source.h"
 
 #ifdef WIN32
 #include <process.h>

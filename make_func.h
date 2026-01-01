@@ -25,6 +25,7 @@ extern int arg_types[400], last_current_type;
 
 char *ctype PROT((int));
 char *etype PROT((int));
+char *etype1 P1(int, n);
 void yyerror P1(char *, str);
 
 #endif

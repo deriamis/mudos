@@ -225,6 +225,7 @@ c_generate_node P1(parse_node_t *, expr) {
     case NODE_TERNARY_OP:
 	c_generate_node(expr->l.expr);
 	expr = expr->r.expr;
+	/* fall through */
     case NODE_BINARY_OP:
 	c_generate_node(expr->l.expr);
 	/* fall through */

@@ -69,6 +69,8 @@ void c_expand_varargs PROT((int));
 void c_new_class PROT((int, int));
 void c_member_lvalue PROT((int));
 void c_member PROT((int));
+void c_make_ref P1(int, op);
+void c_kill_refs P1(int, num);
 
 #endif
 

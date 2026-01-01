@@ -14,27 +14,27 @@
 #include "master.h"
 #include "add_action.h"
 
-static char telnet_break_response[] = {  28, IAC, WILL, TELOPT_TM };
-static char telnet_ip_response[]    = { 127, IAC, WILL, TELOPT_TM };
-static char telnet_abort_response[] = { IAC, DM };
-static char telnet_do_tm_response[] = { IAC, WILL, TELOPT_TM };
-static char telnet_do_naws[]        = { IAC, DO, TELOPT_NAWS };
-static char telnet_do_ttype[]       = { IAC, DO, TELOPT_TTYPE };
-static char telnet_term_query[]     = { IAC, SB, TELOPT_TTYPE, TELQUAL_SEND, IAC, SE };
-static char telnet_no_echo[]        = { IAC, WONT, TELOPT_ECHO };
-static char telnet_no_single[]      = { IAC, WONT, TELOPT_SGA };
-static char telnet_yes_echo[]       = { IAC, WILL, TELOPT_ECHO };
-static char telnet_yes_single[]     = { IAC, WILL, TELOPT_SGA };
-static char telnet_ga[]             = { IAC, GA };
-static char telnet_ayt_response[]   = { '\n', '[', '-', 'Y', 'e', 's', '-', ']', ' ', '\n' };
-static char telnet_line_mode[]      = { IAC, DO, TELOPT_LINEMODE };
-static char telnet_lm_mode[]        = { IAC, SB, TELOPT_LINEMODE, LM_MODE, MODE_EDIT | MODE_TRAPSIG, IAC, SE };
-static char telnet_char_mode[]	    = { IAC, DONT, TELOPT_LINEMODE };
+static unsigned char telnet_break_response[] = {  28, IAC, WILL, TELOPT_TM };
+static unsigned char telnet_ip_response[]    = { 127, IAC, WILL, TELOPT_TM };
+static unsigned char telnet_abort_response[] = { IAC, DM };
+static unsigned char telnet_do_tm_response[] = { IAC, WILL, TELOPT_TM };
+static unsigned char telnet_do_naws[]        = { IAC, DO, TELOPT_NAWS };
+static unsigned char telnet_do_ttype[]       = { IAC, DO, TELOPT_TTYPE };
+static unsigned char telnet_term_query[]     = { IAC, SB, TELOPT_TTYPE, TELQUAL_SEND, IAC, SE };
+static unsigned char telnet_no_echo[]        = { IAC, WONT, TELOPT_ECHO };
+static unsigned char telnet_no_single[]      = { IAC, WONT, TELOPT_SGA };
+static unsigned char telnet_yes_echo[]       = { IAC, WILL, TELOPT_ECHO };
+static unsigned char telnet_yes_single[]     = { IAC, WILL, TELOPT_SGA };
+static unsigned char telnet_ga[]             = { IAC, GA };
+static unsigned char telnet_ayt_response[]   = { '\n', '[', '-', 'Y', 'e', 's', '-', ']', ' ', '\n' };
+static unsigned char telnet_line_mode[]      = { IAC, DO, TELOPT_LINEMODE };
+static unsigned char telnet_lm_mode[]        = { IAC, SB, TELOPT_LINEMODE, LM_MODE, MODE_EDIT | MODE_TRAPSIG, IAC, SE };
+static unsigned char telnet_char_mode[]	    = { IAC, DONT, TELOPT_LINEMODE };
 
-static char slc_default_flags[] = { SLC_NOSUPPORT, SLC_CANTCHANGE, SLC_CANTCHANGE, SLC_CANTCHANGE, SLC_CANTCHANGE, SLC_NOSUPPORT,
+static unsigned char slc_default_flags[] = { SLC_NOSUPPORT, SLC_CANTCHANGE, SLC_CANTCHANGE, SLC_CANTCHANGE, SLC_CANTCHANGE, SLC_NOSUPPORT,
 				    SLC_NOSUPPORT, SLC_NOSUPPORT, SLC_CANTCHANGE, SLC_CANTCHANGE, SLC_NOSUPPORT, SLC_NOSUPPORT,
 				    SLC_NOSUPPORT, SLC_NOSUPPORT, SLC_NOSUPPORT, SLC_NOSUPPORT, SLC_NOSUPPORT, SLC_NOSUPPORT };
-static char slc_default_chars[] = { 0x00, BREAK, IP, AO, AYT, 0x00, 0x00, 0x00, SUSP, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+static unsigned char slc_default_chars[] = { 0x00, BREAK, IP, AO, AYT, 0x00, 0x00, 0x00, SUSP, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 #ifdef DEBUG
 char *slc_names[] = { SLC_NAMELIST };
 #endif
@@ -870,7 +870,7 @@ static void copy_chars P3(interactive_t *, ip, char *, from, int, num_bytes)
 				    case LM_MODE:
 					/* Don't do anything with an ACK */
 					if (!(ip->sb_buf[2] & MODE_ACK)) {
-					    char sb_ack[] = { IAC, SB, TELOPT_LINEMODE, LM_MODE, MODE_EDIT | MODE_TRAPSIG | MODE_ACK, IAC, SE };
+					    unsigned char sb_ack[] = { IAC, SB, TELOPT_LINEMODE, LM_MODE, MODE_EDIT | MODE_TRAPSIG | MODE_ACK, IAC, SE };
 
 					    /* Accept only EDIT and TRAPSIG && force them too */
 					    add_binary_message(ip->ob, sb_ack, sizeof(sb_ack));
@@ -880,7 +880,7 @@ static void copy_chars P3(interactive_t *, ip, char *, from, int, num_bytes)
 				    case LM_SLC:
 					{
 					    int slc_length = 4;
-					    char slc_response[SB_SIZE + 6] = { IAC, SB, TELOPT_LINEMODE, LM_SLC };
+					    unsigned char slc_response[SB_SIZE + 6] = { IAC, SB, TELOPT_LINEMODE, LM_SLC };
 
 					    for (x = 2;  x < ip->sb_pos;  x += 3) {
 						/* no response for an ack */
@@ -979,7 +979,7 @@ static void copy_chars P3(interactive_t *, ip, char *, from, int, num_bytes)
 
 				    case DO:
 					{
-					    char sb_wont[] = { IAC, SB, TELOPT_LINEMODE, WONT, 0, IAC, SE };
+					    unsigned char sb_wont[] = { IAC, SB, TELOPT_LINEMODE, WONT, 0, IAC, SE };
 
 					    /* send back IAC SB TELOPT_LINEMODE WONT x IAC SE */
 					    sb_wont[4] = ip->sb_buf[2];
@@ -989,7 +989,7 @@ static void copy_chars P3(interactive_t *, ip, char *, from, int, num_bytes)
 
 				    case WILL:
 					{
-					    char sb_dont[] = { IAC, SB, TELOPT_LINEMODE, DONT, 0, IAC, SE };
+					    unsigned char sb_dont[] = { IAC, SB, TELOPT_LINEMODE, DONT, 0, IAC, SE };
 
 					    /* send back IAC SB TELOPT_LINEMODE DONT x IAC SE */
 					    sb_dont[4] = ip->sb_buf[2];

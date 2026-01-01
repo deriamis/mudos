@@ -280,7 +280,7 @@ static void deep_copy_svalue P2(svalue_t *, from, svalue_t *, to) {
     case T_BUFFER:
         *to = *from;
         to->u.buf = allocate_buffer(from->u.buf->size);
-        memcpy(to->u.buf->item, to->u.buf->item, from->u.buf->size);
+        memcpy(to->u.buf->item, from->u.buf->item, from->u.buf->size);
         break;
 #endif
     default:
@@ -508,7 +508,7 @@ static int at_end(int i, int imax, int z, int *lens) {
 void 
 f_terminal_colour PROT((void))
 {
-    char *instr, *cp, *savestr, *deststr, **parts;
+    char *instr, *cp, *savestr = 0, *deststr, **parts;
     int num, i, j, k, col, start, space, *lens, maybe_at_end;
     int space_garbage = 0;
     mapping_node_t *elt, **mtab;

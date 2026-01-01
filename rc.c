@@ -49,7 +49,7 @@ static void read_config_file P1(FILE *, file)
     while (1) {
 	if (fgets(str, MAX_LINE_LENGTH * 4, file) == NULL)
 	    break;
-	if (!str)
+	if (!*str)
 	    break;
 	len = strlen(str); /* ACK! */
 	if (len > MAX_LINE_LENGTH) {

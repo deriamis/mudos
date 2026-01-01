@@ -10,18 +10,6 @@
 #include "configure.h"
 #include "options_incl.h"
 
-#ifdef PEDANTIC
-#    undef INLINE
-#    define INLINE
-#elif defined(EDIT_SOURCE)
-#    ifndef CONST
-#        define CONST
-#    endif
-#    ifndef INLINE
-#        define INLINE
-#    endif
-#endif
-
 #include "portability.h"
 #include "macros.h"
 #ifndef _FUNC_SPEC_
@@ -38,9 +26,4 @@
 #endif
 
 #endif
-
-
-
-
-
 

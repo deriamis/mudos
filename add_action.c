@@ -3,6 +3,7 @@
 #include "backend.h"
 #include "hash.h"
 #include "add_action.h"
+#include "efuns_incl.h"
 
 #ifndef NO_ADD_ACTION
 
@@ -407,8 +408,10 @@ static int user_parser P1(char *, buff)
 	    switch (illegal_sentence_action) {
 	    case 1:
 		error("Illegal to call remove_action() [caller was /%s] from a verb returning zero.\n", illegal_sentence_ob->name);
+        break;
 	    case 2:
 		error("Illegal to move or destruct an object (/%s) defining actions from a verb function which returns zero.\n", illegal_sentence_ob->name);
+        break;
 	    }
 	}
     }

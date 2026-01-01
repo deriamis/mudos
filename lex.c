@@ -127,71 +127,71 @@ char *option_defs[] =
 static keyword_t reswords[] =
 {
 #ifdef DEBUG
-    {"__TREE__", L_TREE, 0 },
+    {"__TREE__", L_TREE, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 #endif
 #ifdef ARRAY_RESERVED_WORD
-    {"array", L_ARRAY, 0 },
+    {"array", L_ARRAY, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 #endif
-    {"asm", 0, 0},
-    {"break", L_BREAK, 0},
+    {"asm", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {"break", L_BREAK, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 #ifndef NO_BUFFER_TYPE
-    {"buffer", L_BASIC_TYPE, TYPE_BUFFER},
+    {"buffer", L_BASIC_TYPE, TYPE_BUFFER, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 #endif
-    {"case", L_CASE, 0},
-    {"catch", L_CATCH, 0},
-    {"class", L_CLASS, 0},
+    {"case", L_CASE, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {"catch", L_CATCH, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {"class", L_CLASS, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 #ifdef COMPAT_32
-    {"closure", L_BASIC_TYPE, TYPE_FUNCTION},
+    {"closure", L_BASIC_TYPE, TYPE_FUNCTION, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 #endif
-    {"continue", L_CONTINUE, 0},
-    {"default", L_DEFAULT, 0},
-    {"do", L_DO, 0},
-    {"efun", L_EFUN, 0},
-    {"else", L_ELSE, 0},
-    {"float", L_BASIC_TYPE, TYPE_REAL},
-    {"for", L_FOR, 0},
-    {"foreach", L_FOREACH, 0},
-    {"function", L_BASIC_TYPE, TYPE_FUNCTION},
-    {"if", L_IF, 0},
-    {"in", L_IN, 0},
-    {"inherit", L_INHERIT, 0},
-    {"int", L_BASIC_TYPE, TYPE_NUMBER},
-    {"mapping", L_BASIC_TYPE, TYPE_MAPPING},
-    {"mixed", L_BASIC_TYPE, TYPE_ANY},
-    {"new", L_NEW, 0},
-    {"nomask", L_TYPE_MODIFIER, DECL_NOMASK},
+    {"continue", L_CONTINUE, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {"default", L_DEFAULT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {"do", L_DO, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {"efun", L_EFUN, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {"else", L_ELSE, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {"float", L_BASIC_TYPE, TYPE_REAL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {"for", L_FOR, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {"foreach", L_FOREACH, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {"function", L_BASIC_TYPE, TYPE_FUNCTION, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {"if", L_IF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {"in", L_IN, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {"inherit", L_INHERIT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {"int", L_BASIC_TYPE, TYPE_NUMBER, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {"mapping", L_BASIC_TYPE, TYPE_MAPPING, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {"mixed", L_BASIC_TYPE, TYPE_ANY, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {"new", L_NEW, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {"nomask", L_TYPE_MODIFIER, DECL_NOMASK, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 #ifdef SENSIBLE_MODIFIERS
-    {"nosave", L_TYPE_MODIFIER, DECL_NOSAVE},
+    {"nosave", L_TYPE_MODIFIER, DECL_NOSAVE, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 #endif
-    {"object", L_BASIC_TYPE, TYPE_OBJECT},
-    {"parse_command", L_PARSE_COMMAND, 0},
-    {"private", L_TYPE_MODIFIER, DECL_PRIVATE},
-    {"protected", L_TYPE_MODIFIER, DECL_PROTECTED},
+    {"object", L_BASIC_TYPE, TYPE_OBJECT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {"parse_command", L_PARSE_COMMAND, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {"private", L_TYPE_MODIFIER, DECL_PRIVATE, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {"protected", L_TYPE_MODIFIER, DECL_PROTECTED, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 #ifdef SENSIBLE_MODIFIERS
-    {"public", L_TYPE_MODIFIER, DECL_PUBLIC},
+    {"public", L_TYPE_MODIFIER, DECL_PUBLIC, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 #else
-    {"public", L_TYPE_MODIFIER, DECL_VISIBLE},
+    {"public", L_TYPE_MODIFIER, DECL_VISIBLE, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 #endif
 #ifdef REF_RESERVED_WORD
-    {"ref", L_REF, 0 },
+    {"ref", L_REF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 #endif
-    {"return", L_RETURN, 0},
-    {"sscanf", L_SSCANF, 0},
+    {"return", L_RETURN, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {"sscanf", L_SSCANF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 #ifndef SENSIBLE_MODIFIERS
-    {"static", L_TYPE_MODIFIER, DECL_NOSAVE | DECL_PROTECTED },
+    {"static", L_TYPE_MODIFIER, DECL_NOSAVE | DECL_PROTECTED, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 #endif
 #ifdef HAS_STATUS_TYPE
-    {"status", L_BASIC_TYPE, TYPE_NUMBER},
+    {"status", L_BASIC_TYPE, TYPE_NUMBER, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 #endif
-    {"string", L_BASIC_TYPE, TYPE_STRING},
-    {"switch", L_SWITCH, 0},
-    {"time_expression", L_TIME_EXPRESSION, 0},
-    {"varargs", L_TYPE_MODIFIER, FUNC_VARARGS },
+    {"string", L_BASIC_TYPE, TYPE_STRING, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {"switch", L_SWITCH, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {"time_expression", L_TIME_EXPRESSION, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {"varargs", L_TYPE_MODIFIER, FUNC_VARARGS, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 #ifdef VIRTUAL_RESERVED_WORD
-    {"virtual", L_TYPE_MODIFIER, 0 },
+    {"virtual", L_TYPE_MODIFIER, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 #endif
-    {"void", L_BASIC_TYPE, TYPE_VOID},
-    {"while", L_WHILE, 0},
+    {"void", L_BASIC_TYPE, TYPE_VOID, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {"while", L_WHILE, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 };
 
 static ident_hash_elem_t **ident_hash_table;
@@ -215,7 +215,7 @@ typedef struct linked_buf_s {
     char *last_nl;
 } linked_buf_t;
 
-static linked_buf_t head_lbuf = { NULL, TERM_START };
+static linked_buf_t head_lbuf = { NULL, TERM_START, {0}, NULL, NULL, NULL };
 static linked_buf_t *cur_lbuf;
 
 static void handle_define PROT((char *));
@@ -529,11 +529,12 @@ get_terminator P1(char *, terminator)
 static int
 get_array_block P1(char *, term)
 {
-    int termlen;		/* length of terminator */
+    size_t termlen;		/* length of terminator */
     char *array_line[NUMCHUNKS];/* allocate memory in chunks */
-    int header, len;		/* header length; position in chunk */
-    int startpos, startchunk;	/* start of line */
-    int curchunk, res;		/* current chunk; this function's result */
+    size_t header, len;		/* header length; position in chunk */
+    size_t startpos, startchunk;	/* start of line */
+    size_t curchunk;
+    int res;		/* current chunk; this function's result */
     int i;			/* an index counter */
     unsigned char c;		/* a char */
     char *yyp = outp;
@@ -596,7 +597,7 @@ get_array_block P1(char *, term)
 		 */
 		outp = --yyp;	/* some operating systems give EOF only once */
 
-		for (i = curchunk; i > startchunk; i--)
+		for (i = (int)curchunk; i > (int)startchunk; i--)
 		    add_input(array_line[i]);
 		add_input(array_line[startchunk] + startpos + termlen);
 	    }
@@ -670,11 +671,12 @@ get_array_block P1(char *, term)
 static int
 get_text_block P1(char *, term)
 {
-    int termlen;		/* length of terminator */
+    size_t termlen;		/* length of terminator */
     char *text_line[NUMCHUNKS];	/* allocate memory in chunks */
-    int len;			/* position in chunk */
-    int startpos, startchunk;	/* start of line */
-    int curchunk, res;		/* current chunk; this function's result */
+    size_t len;			/* position in chunk */
+    size_t startpos, startchunk;	/* start of line */
+    size_t curchunk;
+    int res;		/* current chunk; this function's result */
     int i;			/* an index counter */
     unsigned char c;		/* a char */
     register char *yyp = outp;
@@ -734,7 +736,7 @@ get_text_block P1(char *, term)
 		 */
 		outp = --yyp;	/* some operating systems give EOF only once */
 
-		for (i = curchunk; i > startchunk; i--) {
+		for (i = (int)curchunk; i > (int)startchunk; i--) {
 		    /* Ick.  go back and unprotect " and \ */
 		    p = text_line[i];
 		    while (*p && *p != '\\')
@@ -2226,7 +2228,7 @@ static void int_add_instr_name P3(char *, name, int, n, short, t)
 
 static void init_instrs()
 {
-    int i, n;
+    size_t i, n;
 
     for (i = 0; i < BASE; i++) {
 	instrs[i].ret_type = -1;
@@ -2766,8 +2768,6 @@ static int extract_args P2(char **, argv, char *, argb)
 
 	/* negative parcnt means we're done collecting args */
 	if (parcnt < 0 || (c == ',' && !parcnt && !dquote && !squote)) {
-	    char *exp;
-
 	    /* strip off trailing whitespace char if there was one */
 	    if (uisspace(*(out - 1))) *(out - 1) = 0;
 	    else *out++ = 0;
@@ -3387,7 +3387,7 @@ static void add_keyword_t P2(char *, name, keyword_t *, entry) {
 }
 
 void init_identifiers() {
-    int i;
+    size_t i;
     ident_hash_elem_t *ihe;
 
     init_instrs();

@@ -110,7 +110,7 @@ optional_default: /* empty */ { $$="DEFAULT_NONE"; }
 
 func: type ID optional_ID '(' arg_list optional_default ')' ';'
     {
-	char buff[500];
+	char buff[1000];
 	char f_name[500];
 	int i, len;
 	if (min_arg == -1)
@@ -170,10 +170,10 @@ func: type ID optional_ID '(' arg_list optional_default ')' ';'
         if (!strcmp($2, "call_other") && !lookup_define("CAST_CALL_OTHERS")) {
 	    $1 = MIXED;
 	}
-     	sprintf(buff, "{\"%s\",%s,0,0,%d,%d,%s,%s,%s,%s,%s,%d,%s},\n",
-		$2, f_name, min_arg, limit_max ? -1 : $5, 
-		$1 != VOID ? ctype($1) : "TYPE_NOVALUE",
-		etype(0), etype(1), etype(2), etype(3), i, $6);
+     	snprintf(buff, sizeof(buff), "{\"%s\",%s,0,0,%d,%d,%s,%s,%s,%s,%s,%d,%s},\n",
+			$2, f_name, min_arg, limit_max ? -1 : $5, 
+			$1 != VOID ? ctype($1) : "TYPE_NOVALUE",
+			etype(0), etype(1), etype(2), etype(3), i, $6);
 	if (strlen(buff) > sizeof buff)
 	    mf_fatal("Local buffer overwritten !\n");
 
@@ -293,7 +293,7 @@ char *etype1 P1(int, n)
 char *etype P1(int, n)
 {
     int i;
-    int local_size = 100;
+    size_t local_size = 100;
     char *buff = (char *)malloc(local_size);
 
     for (i=0; i < curr_arg_type_size; i++) {

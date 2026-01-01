@@ -833,23 +833,36 @@ INLINE_STATIC void push_lvalue_range P1(int, code)
 	    break;
 #endif
 	default:
-	    error("Range lvalue on illegal type\n");
 	    IF_DEBUG(size = 0);
+	    error("Range lvalue on illegal type\n");
 	}
-    } else
-	error("Range lvalue on illegal type\n");
+    } else {
+	    error("Range lvalue on illegal type\n");
+        return;
+    }
     
-    if (!((--sp)->type == T_NUMBER)) error("Illegal 2nd index type to range lvalue\n");
+    if (!((--sp)->type == T_NUMBER)) {
+        error("Illegal 2nd index type to range lvalue\n");
+        return;
+    }
     
     ind2 = (code & 0x01) ? (size - sp->u.number) : sp->u.number;
-    if (++ind2 < 0 || (ind2 > size))
-	error("The 2nd index to range lvalue must be >= -1 and < sizeof(indexed value)\n");
+    if (++ind2 < 0 || (ind2 > size)) {
+    	error("The 2nd index to range lvalue must be >= -1 and < sizeof(indexed value)\n");
+        return;
+    }
     
-    if (!((--sp)->type == T_NUMBER)) error("Illegal 1st index type to range lvalue\n");
+    if (!((--sp)->type == T_NUMBER)) {
+        error("Illegal 1st index type to range lvalue\n");
+        return;
+    }
+
     ind1 = (code & 0x10) ? (size - sp->u.number) : sp->u.number;
     
-    if (ind1 < 0 || ind1 > size)
-	error("The 1st index to range lvalue must be >= 0 and <= sizeof(indexed value)\n");
+    if (ind1 < 0 || ind1 > size) {
+	    error("The 1st index to range lvalue must be >= 0 and <= sizeof(indexed value)\n");
+        return;
+    }
     
     global_lvalue_range.ind1 = ind1;
     global_lvalue_range.ind2 = ind2;
@@ -1520,7 +1533,7 @@ void break_point()
 }
 #endif
 
-program_t fake_prog = { "<function>" };
+program_t fake_prog = { "<function>", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 unsigned char fake_program = F_RETURN;
 
 /*
@@ -1647,8 +1660,10 @@ INLINE_STATIC void do_loop_cond_local()
 	case T_NUMBER:
 	case T_REAL:
 	    error("2nd argument to < is not numeric when the 1st is.\n");
+        break;
 	case T_STRING:
 	    error("2nd argument to < is not string when the 1st is.\n");
+        break;
 	default:
 	    error("Bad 1st argument to <.\n");
 	}
@@ -2013,16 +2028,18 @@ eval_instruction P1(char *, p)
 	    svalue_t *lval;
 	    
 	    if (s->type == T_REF) {
-		lval = s->u.ref->lvalue;
-		if (!lval)
-		    error("Reference is invalid.\n");
+    		lval = s->u.ref->lvalue;
+    		if (!lval)
+	    	    error("Reference is invalid.\n");
+                break;
 		
-		if (lval->type == T_LVALUE_BYTE) {
-		    push_number(*global_lvalue_byte.u.lvalue_byte);
-		    break;
-		}
+    		if (lval->type == T_LVALUE_BYTE) {
+	    	    push_number(*global_lvalue_byte.u.lvalue_byte);
+		        break;
+    		}
 	    } else {
-		error("Non-reference value passed as reference argument.\n");
+    		error("Non-reference value passed as reference argument.\n");
+            break;
 	    }
 		
 	    if (lval->type == T_OBJECT && (lval->u.ob->flags & O_DESTRUCTED))
@@ -2343,9 +2360,9 @@ eval_instruction P1(char *, p)
 			    /* add_array now free's the arrays */
 			    (sp-1)->u.arr = add_array((sp - 1)->u.arr, sp->u.arr);
 			    sp--;
-			    break;
 			}
 		    } /* end of x + T_ARRAY */
+			break;
 		case T_MAPPING:
 		    {
 			if ((sp-1)->type == T_MAPPING) {
@@ -2355,11 +2372,11 @@ eval_instruction P1(char *, p)
 			    free_mapping((sp--)->u.map);
 			    free_mapping(sp->u.map);
 			    sp->u.map = map;
-			    break;
 			} else
 			    error("Bad type argument to +. Had %s and %s\n",
 				  type_name((sp - 1)->type), type_name(sp->type));
 		    } /* end of x + T_MAPPING */
+			break;
 		case T_STRING:
 		    {
 			switch ((sp-1)->type) {
@@ -3115,7 +3132,7 @@ eval_instruction P1(char *, p)
 			error("Buffer indexes must be integers.\n");
 
 		    i = (sp - 1)->u.number;
-		    if ((i > sp->u.buf->size) || (i < 0))
+		    if ((i > (int)sp->u.buf->size) || (i < 0))
 			error("Buffer index out of bounds.\n");
 		    i = sp->u.buf->item[i];
 		    free_buffer(sp->u.buf);
@@ -3130,7 +3147,7 @@ eval_instruction P1(char *, p)
 			error("String indexes must be integers.\n");
 		    }
 		    i = (sp - 1)->u.number;
-		    if ((i > SVALUE_STRLEN(sp)) || (i < 0))
+		    if ((i > (int)SVALUE_STRLEN(sp)) || (i < 0))
 			error("String index out of bounds.\n");
 		    i = (unsigned char) sp->u.string[i];
 		    free_string_svalue(sp);
@@ -3170,7 +3187,7 @@ eval_instruction P1(char *, p)
 			error("Indexing a buffer with an illegal type.\n");
 
 		    i = sp->u.buf->size - (sp - 1)->u.number;
-		    if ((i > sp->u.buf->size) || (i < 0))
+		    if ((i > (int)sp->u.buf->size) || (i < 0))
 			error("Buffer index out of bounds.\n");
 
 		    i = sp->u.buf->item[i];
@@ -5060,12 +5077,13 @@ int inter_sscanf P4(svalue_t *, arg, svalue_t *, s0, svalue_t *, s1, int, num_ar
 		while (1) {
 		    switch (*tmp) {
 		    case '\\':
-			if (*++tmp) {
-			    tmp++;
-			    continue;
-			}
+		    	if (*++tmp) {
+    			    tmp++;
+	    		}
+		    	continue;
 		    case '\0':
-			error("Bad regexp format: '%%%s' in sscanf format string\n", fmt);
+			    error("Bad regexp format: '%%%s' in sscanf format string\n", fmt);
+                break;
 		    case '(':
 			num++;
 			/* FALLTHROUGH */
@@ -5175,11 +5193,12 @@ int inter_sscanf P4(svalue_t *, arg, svalue_t *, s0, svalue_t *, s1, int, num_ar
 			switch (*tmp) {
 			case '\\':
 			    if (*++tmp) {
-				tmp++;
-				continue;
+    				tmp++;
 			    }
+	    		continue;
 			case '\0':
 			    error("Bad regexp format : '%%%s' in sscanf format string\n", fmt);
+                break;
 			case '(':
 			    num++;
 			    /* FALLTHROUGH */
@@ -5232,9 +5251,11 @@ int inter_sscanf P4(svalue_t *, arg, svalue_t *, s0, svalue_t *, s1, int, num_ar
 		}
 
 	    case 0:
-		error("Format string can't end in '%%'.\n");
+    		error("Format string can't end in '%%'.\n");
+            break;
 	    default:
-		error("Bad type : '%%%c' in sscanf() format string\n", fmt[-1]);
+    		error("Bad type : '%%%c' in sscanf() format string\n", fmt[-1]);
+            break;
 	    }
 	    
 	    if (!skipme) {
@@ -5246,7 +5267,8 @@ int inter_sscanf P4(svalue_t *, arg, svalue_t *, s0, svalue_t *, s1, int, num_ar
 	    if (!*(in_string = tmp)) return number_of_matches;
 	    switch (fmt[-1]) {
 	    case 'x':
-		base = 16;
+		    base = 16;
+            continue;
 	    case 'd':
 		{
 		    num = (int) strtol(in_string, &in_string, base);
